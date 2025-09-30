@@ -84,15 +84,59 @@ df3
 <img width="465" height="596" alt="image" src="https://github.com/user-attachments/assets/085c366c-2161-4536-bd2c-12b2755c8680" />
 
 ### FEATURE SELECTION
+
+#### FILTER METHOD
 ```python
+from sklearn.preprocessing import LabelEncoder
+from sklearn.feature_selection import SelectKBest, mutual_info_classif
 
+X = df3[['Gender', 'Height', 'Weight']].copy()
+y = df3['Index']
 
+X['Gender'] = LabelEncoder().fit_transform(X['Gender'])
 
+mi_selector = SelectKBest(score_func=mutual_info_classif, k='all')
+mi_selector.fit(X, y)
 
+mi_scores = pd.DataFrame({'Feature': X.columns, 'MI_Score': mi_selector.scores_})
 
+selected_features = mi_scores[mi_scores['MI_Score'] > mi_scores['MI_Score'].mean()]['Feature'].tolist()
 
+print("Selected Features:", selected_features)
+```
+<img width="437" height="51" alt="image" src="https://github.com/user-attachments/assets/c0046f56-116c-483d-9c0f-02e9912702e1" />
 
+#### WRAPPER METHOD
+```python
+from sklearn.linear_model import LogisticRegression
+from sklearn.feature_selection import RFE
 
-       
+logreg = LogisticRegression(max_iter=1000)
+rfe = RFE(logreg, n_features_to_select=2)  
+rfe.fit(X, y)
+
+selected_rfe_features = X.columns[rfe.support_].tolist()
+print("Wrapper Selected Features (RFE):", selected_rfe_features)
+```
+<img width="639" height="60" alt="image" src="https://github.com/user-attachments/assets/f895739d-3159-4b16-be03-0098601346d8" />
+
+#### EMBEDDED METHOD
+```python
+from sklearn.linear_model import Lasso
+from sklearn.preprocessing import StandardScaler
+
+scaler = StandardScaler()
+X_scaled = scaler.fit_transform(X)
+
+lasso = Lasso(alpha=0.1)
+lasso.fit(X_scaled, y)
+
+coef_df = pd.DataFrame({'Feature': X.columns, 'Coefficient': lasso.coef_})
+selected_lasso_features = coef_df[coef_df['Coefficient'] != 0]['Feature'].tolist()
+
+print("Embedded Selected Features (Lasso):", selected_lasso_features)
+```
+<img width="545" height="31" alt="image" src="https://github.com/user-attachments/assets/173bcad1-1802-412d-9d87-2bd5890fe18f" />
+
 # RESULT:
-       # INCLUDE YOUR RESULT HERE
+The given data has been read and Feature Scaling and Feature Selection process has been performed.
