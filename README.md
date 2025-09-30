@@ -24,6 +24,75 @@ The feature selection techniques used are:
 3.Embedded Method
 
 # CODING AND OUTPUT:
-       # INCLUDE YOUR CODING AND OUTPUT SCREENSHOTS HERE
+
+### FEATURE SCALING
+```python
+import pandas as pd
+from scipy import stats
+import numpy as np
+df = pd.read_csv("bmi.csv")
+df.head()
+```
+<img width="411" height="294" alt="image" src="https://github.com/user-attachments/assets/80b0a2ae-f85c-45b8-a31f-ad334b06f445" />
+
+```python
+df.dropna()
+```
+<img width="485" height="605" alt="image" src="https://github.com/user-attachments/assets/06c033ef-918b-43d1-bff8-44c6caa87a88" />
+
+```python
+from sklearn.preprocessing import StandardScaler
+sc = StandardScaler()
+df[['Height','Weight']]=sc.fit_transform(df[['Height','Weight']])
+df.head(10)
+```
+<img width="457" height="520" alt="image" src="https://github.com/user-attachments/assets/a1d4d79b-4691-4f31-a402-f6cddb36beee" />
+
+```python
+from sklearn.preprocessing import MinMaxScaler
+scaler = MinMaxScaler()
+df[['Height','Weight']] = scaler.fit_transform(df[['Height','Weight']])
+df.head(10)
+```
+<img width="418" height="519" alt="image" src="https://github.com/user-attachments/assets/0ea54be5-d8c0-46ca-a281-e77795858417" />
+
+```python
+from sklearn.preprocessing import Normalizer
+scaler = Normalizer()
+df1 = df.copy()
+df1[['Height','Weight']] = scaler.fit_transform(df1[['Height','Weight']])
+df1
+```
+<img width="454" height="570" alt="image" src="https://github.com/user-attachments/assets/450386ad-17fe-4b56-a3b2-fbc0b8e55277" />
+
+```python
+from sklearn.preprocessing import MaxAbsScaler
+scaler = MaxAbsScaler()
+df2 = df1.copy()
+df2[['Height','Weight']] = scaler.fit_transform(df2[['Height','Weight']])
+df2
+```
+<img width="465" height="599" alt="image" src="https://github.com/user-attachments/assets/b4b23a7f-4fa7-4e8a-9c52-7d6c174041e7" />
+
+```python
+from sklearn.preprocessing import RobustScaler
+scaler = RobustScaler()
+df3 = df2.copy()
+df3[['Height','Weight']] = scaler.fit_transform(df3[['Height','Weight']])
+df3
+```
+<img width="465" height="596" alt="image" src="https://github.com/user-attachments/assets/085c366c-2161-4536-bd2c-12b2755c8680" />
+
+### FEATURE SELECTION
+```python
+
+
+
+
+
+
+
+
+       
 # RESULT:
        # INCLUDE YOUR RESULT HERE
